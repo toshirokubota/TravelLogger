@@ -11,6 +11,7 @@ import java.util.UUID;
  * Created by kubota on 2/2/2015.
  */
 public class Trip {
+
     private String name;
     private Date date;
     private UUID id;
@@ -20,7 +21,7 @@ public class Trip {
     private Trip() {
     }
 
-    public static Trip creteTrip(String name, Location location){
+    public static Trip createTrip(String name, Location location){
         Trip trip = new Trip();
         trip.name = name;
         trip.date = new Date();
@@ -71,8 +72,16 @@ public class Trip {
         this.date = date;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "Trip for " + name + " on " + date + " #" + id;
+        return "Trip for " + name + " on " + date + " at " + location;
     }
 }

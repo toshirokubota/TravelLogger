@@ -4,6 +4,7 @@
     <string name="app_name">TravelLogger</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_new">New trip</string>
     <string name="action_log">Logs</string>
     <string name="title_activity_signin">SigninActivity</string>
     <string name="welcome">Welcome to Travel Logger</string>

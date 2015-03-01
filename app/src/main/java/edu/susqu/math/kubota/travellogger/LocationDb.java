@@ -48,12 +48,21 @@ public class LocationDb {
             "VALUES (?,?,?,?,?,?,?,?,?)";
     private static final String READ_SQL = "SELECT "+ID+", "+NICKNAME+", " + UUID+", "+
             DESCRIPTION+", " + DATE +", "+
-            CITY+", " +STATE+ ", "+COUNTRY+
+            CITY+", " +STATE+ ", "+COUNTRY+", "+
             LONGITUDE+ ", "+LATITUDE+
             " FROM " +
             TABLE_NAME;
-    private static final String UPDATE_DESCRIPTION = "UPDATE " + TABLE_NAME +
-            " SET "+DESCRIPTION+"=? WHERE "+UUID+"=?";
+    private static final String UPDATE_SQL = "UPDATE " + TABLE_NAME +
+            " SET "+
+            NICKNAME+"=?, " +
+            DESCRIPTION+"=?, " +
+            DATE+"=?, " +
+            CITY+"=?, " +
+            STATE+"=?, " +
+            COUNTRY+"=?, " +
+            LONGITUDE+"=?, " +
+            LATITUDE+"=? " +
+            "WHERE "+UUID+"=?";
 
     // The Context object that created this StocksDb
     private final Context context;
@@ -85,7 +94,7 @@ public class LocationDb {
 
         // pre-compile statements
         insertStmt = db.compileStatement(INSERT_SQL);
-        updateStmt = db.compileStatement(UPDATE_DESCRIPTION);
+        updateStmt = db.compileStatement(UPDATE_SQL);
     }
 
     public int addTrip(Trip trip){
@@ -105,10 +114,18 @@ public class LocationDb {
         return id;
     }
 
-    public void updateTripDescription(Trip trip){
+    public void updateTrip(Trip trip){
         Log.d(TAG, "Updating trip description in DB="+trip.toString());
-        updateStmt.bindString(1, trip.getDescription());
-        updateStmt.bindString(2, trip.getId().toString());
+        Location loc = trip.getLocation();
+        updateStmt.bindString(1, trip.getName());
+        updateStmt.bindString(2, trip.getDescription());
+        updateStmt.bindString(3, trip.getDate().toString());
+        updateStmt.bindString(4, loc.getCity());
+        updateStmt.bindString(5, loc.getState());
+        updateStmt.bindString(6, loc.getCountry());
+        updateStmt.bindString(7, loc.getLongitude());
+        updateStmt.bindString(8, loc.getLattitude());
+        updateStmt.bindString(9, trip.getId().toString());
         updateStmt.execute();
     }
 

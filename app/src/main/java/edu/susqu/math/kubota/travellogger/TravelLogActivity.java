@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.UUID;
 
@@ -19,14 +21,14 @@ public class TravelLogActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_travel_log);
-        if (savedInstanceState == null) {
+        setContentView(R.layout.activity_travel_entry);
+        //if (savedInstanceState == null) {
             UUID id = (UUID)getIntent().getSerializableExtra(EXTRA_TRIP_ID);
             Fragment fragment = PlaceholderFragment.newInstance(id);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, fragment)
                     .commit();
-        }
+        //}
     }
 
 
@@ -55,10 +57,17 @@ public class TravelLogActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        private UUID mId;
+        //private Trip mTrip;
+        //private Context mContext;
         public static PlaceholderFragment newInstance(UUID id){
             PlaceholderFragment fragment = new PlaceholderFragment();
-            fragment.mId = id;
+            //TripContainer trips = TripContainer.get(context);
+            //fragment.mTrip = trips.getTrip(id);
+            //fragment.mContext = context;
+            Bundle b = new Bundle();
+            b.putSerializable("id", id);
+
+            fragment.setArguments(b);
             return fragment;
         }
 
@@ -68,12 +77,48 @@ public class TravelLogActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_travel, container, false);
-            TripContainer trips = TripContainer.get(getActivity());
-            Trip trip = trips.getTrip(mId);
-            TextView textView = (TextView)rootView.findViewById(R.id.textView2);
-            textView.setText(trip.toString());
+            final TripContainer trips = TripContainer.get(getActivity());
+            UUID id = (UUID) getArguments().getSerializable("id");
+            final Trip trip = trips.getTrip(id);
+            View rootView = inflater.inflate(R.layout.fragment_travel_entry, container, false);
+            final EditText nickname = (EditText)rootView.findViewById(R.id.editNickname);
+            nickname.setText(trip.getName());
+            final EditText date = (EditText)rootView.findViewById(R.id.editDate);
+            date.setText(trip.getDate().toString());
+            Location loc = trip.getLocation();
+            final EditText city = (EditText)rootView.findViewById(R.id.editCity);
+            city.setText(loc.getCity());
+            final EditText state = (EditText)rootView.findViewById(R.id.editState);
+            state.setText(loc.getState());
+            final EditText country = (EditText)rootView.findViewById(R.id.editCountry);
+            country.setText(loc.getCountry());
+            final EditText desc = (EditText)rootView.findViewById(R.id.editDescription);
+            String s = trip.getDescription();
+            if(s.isEmpty()) {
+                desc.setHint("provide description of the trip.");
+            } else {
+                desc.setText(s);
+            }
+
+            Button save = (Button)rootView.findViewById(R.id.saveButton);
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    trip.setName(nickname.getText().toString());
+                    trip.getLocation().setCity(city.getText().toString());
+                    trip.getLocation().setState(state.getText().toString());
+                    trip.getLocation().setCountry(country.getText().toString());
+                    trip.setDescription(desc.getText().toString());
+                    trips.updateTrip(trip);
+                }
+            });
+
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
         }
     }
 }
