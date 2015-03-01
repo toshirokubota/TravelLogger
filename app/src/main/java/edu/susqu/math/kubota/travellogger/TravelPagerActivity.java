@@ -6,11 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.UUID;
 
@@ -81,7 +78,7 @@ public class TravelPagerActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    /*public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
         }
@@ -92,5 +89,5 @@ public class TravelPagerActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_travel_pager, container, false);
             return rootView;
         }
-    }
+    }*/
 }

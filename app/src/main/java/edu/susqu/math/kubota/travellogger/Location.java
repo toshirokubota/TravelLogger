@@ -43,6 +43,27 @@ public class Location {
     public String getCountry() {
         return country;
     }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLattitude(String lattitude) {
+        this.lattitude = lattitude;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     @Override
     public String toString() {
         return longitude + " " + lattitude + " " + city + " " + state + " " + country;
