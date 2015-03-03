@@ -14,11 +14,11 @@ public class TripContainer {
     private ArrayList<Trip> mTrips = new ArrayList<Trip>();
     private Context mAppContext;
     private static TripContainer sTripContainer;
-    private LocationDb mDb;
+    private TripDB mDb;
 
     private TripContainer(Context appContext) {
         mAppContext = appContext;
-        mDb = new LocationDb(appContext);
+        mDb = new TripDB(appContext);
         try {
             mTrips = mDb.getTrips();
         } catch(ParseException ex) {

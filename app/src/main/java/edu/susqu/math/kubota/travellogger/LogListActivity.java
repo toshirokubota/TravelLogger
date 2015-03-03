@@ -88,6 +88,12 @@ public class LogListActivity extends ActionBarActivity {
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            ((TripAdapter)this.getListAdapter()).notifyDataSetChanged();
+        }
+
+        @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             //super.onListItemClick(l, v, position, id);
             Log.d("kubota", "Item #" + id + " clicked.");

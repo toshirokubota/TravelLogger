@@ -66,6 +66,9 @@ public class Location {
 
     @Override
     public String toString() {
+        return city + " " + state + " " + country;
+    }
+    public String toFullString() {
         return longitude + " " + lattitude + " " + city + " " + state + " " + country;
     }
 

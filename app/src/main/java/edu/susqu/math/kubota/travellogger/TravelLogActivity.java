@@ -1,5 +1,6 @@
 package edu.susqu.math.kubota.travellogger;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -10,8 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 
@@ -83,8 +87,8 @@ public class TravelLogActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_travel_entry, container, false);
             final EditText nickname = (EditText)rootView.findViewById(R.id.editNickname);
             nickname.setText(trip.getName());
-            final EditText date = (EditText)rootView.findViewById(R.id.editDate);
-            date.setText(trip.getDate().toString());
+            final TextView date = (TextView)rootView.findViewById(R.id.labelDate);
+            date.setText(trip.getDateString());
             Location loc = trip.getLocation();
             final EditText city = (EditText)rootView.findViewById(R.id.editCity);
             city.setText(loc.getCity());
@@ -99,6 +103,29 @@ public class TravelLogActivity extends ActionBarActivity {
             } else {
                 desc.setText(s);
             }
+
+            date.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(trip.getDate());
+                    DatePickerDialog dlg = new DatePickerDialog(PlaceholderFragment.this.getActivity(),
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                    calendar.set(Calendar.YEAR, year);
+                                    calendar.set(Calendar.MONTH, monthOfYear);
+                                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                    trip.setDate(calendar.getTime());
+                                    date.setText(trip.getDateString());
+                                }
+                            },
+                            calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH));
+                    dlg.show();
+                }
+            });
 
             Button save = (Button)rootView.findViewById(R.id.saveButton);
             save.setOnClickListener(new View.OnClickListener() {

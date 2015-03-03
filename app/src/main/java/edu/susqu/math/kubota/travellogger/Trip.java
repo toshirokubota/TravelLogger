@@ -80,8 +80,12 @@ public class Trip {
         this.description = description;
     }
 
+    public String getDateString() {
+        return DateFormat.getDateInstance().format(date);
+    }
+
     @Override
     public String toString() {
-        return "Trip for " + name + " on " + date + " at " + location;
+        return name + " at " + location + " on " + getDateString();
     }
 }
